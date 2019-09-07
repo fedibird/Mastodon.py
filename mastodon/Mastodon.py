@@ -1442,10 +1442,13 @@ class Mastodon:
     def status_post(self, status, in_reply_to_id=None, media_ids=None,
                     sensitive=False, visibility=None, spoiler_text=None,
                     language=None, idempotency_key=None, content_type=None,
-                    scheduled_at=None, poll=None):
+                    scheduled_at=None, poll=None, quote_id=None):
         """
         Post a status. Can optionally be in reply to another status and contain
         media.
+
+        The `quote_id` parameter is a non-standard extension that specifies the
+        id of the quoted status.
         
         `media_ids` should be a list. (If it's not, the function will turn it
         into one.) It can contain up to four pieces of media (uploaded via 
@@ -1497,6 +1500,9 @@ class Mastodon:
         """
         if in_reply_to_id != None:
             in_reply_to_id = self.__unpack_id(in_reply_to_id)
+        
+        if quote_id != None:
+            quote_id = self.__unpack_id(quote_id)
         
         if scheduled_at != None:
             scheduled_at = self.__consistent_isoformat_utc(scheduled_at)
